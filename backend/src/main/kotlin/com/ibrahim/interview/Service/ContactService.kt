@@ -56,7 +56,6 @@ class ContactService(
             imagePath,
             imageReference,
             storageProvider
-
         )
         contactRepo.save(contact)
         return contactMapper.fromModelToDto(contact)
@@ -108,4 +107,20 @@ class ContactService(
         return contactMapper.fromModelToDto(contact)
     }
 
+    fun delete(contactId: Int): String {
+
+        var contact: Contact? = contactRepo.findByIdOrNull(contactId)
+        if (contact == null) {
+            throw CustomException("Contact not found");
+        }
+
+        val bucket = StorageClient.getInstance().bucket(bucketName)
+
+        if (contact.imageReference != null) {
+            bucket.get(contact.imageReference).delete()
+        }
+
+        contactRepo.delete(contact)
+        return "Contact Deleted Successfully"
+    }
 }
