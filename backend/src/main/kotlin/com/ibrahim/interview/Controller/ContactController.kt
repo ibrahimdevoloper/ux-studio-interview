@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -40,7 +41,23 @@ class ContactController(val contactService: ContactService) {
         @PathVariable("id") contactId: Int
     )
             : ResponseEntity<String> {
-        val message = contactService.delete( contactId)
+        val message = contactService.delete(contactId)
+        return ResponseEntity(message, HttpStatus.ACCEPTED)
+    }
+
+    @GetMapping("")
+    fun getContacts()
+            : ResponseEntity<List<ContactDTO>> {
+        val message = contactService.getAll()
+        return ResponseEntity(message, HttpStatus.ACCEPTED)
+    }
+
+    @GetMapping("/{id}")
+    fun getContact(
+        @PathVariable("id") contactId: Int
+    )
+            : ResponseEntity<ContactDTO> {
+        val message = contactService.getOne(contactId)
         return ResponseEntity(message, HttpStatus.ACCEPTED)
     }
 }
