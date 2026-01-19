@@ -15,6 +15,7 @@ import com.google.cloud.storage.Storage
 import com.google.firebase.cloud.StorageClient
 import com.ibrahim.interview.Exception.CustomException
 import org.springframework.data.repository.findByIdOrNull
+import kotlin.jvm.optionals.getOrElse
 
 @Service
 class ContactService(
@@ -63,10 +64,9 @@ class ContactService(
 
     fun update(form: ContactRequestForm, contactId: Int): ContactDTO {
 
-        var contact: Contact? = contactRepo.findByIdOrNull(contactId)
-        if (contact == null) {
-            throw CustomException("Contact not found");
-        }
+        val contactOptional = contactRepo.findById(contactId)
+        var contact: Contact = contactOptional.orElseThrow { CustomException("Movie with id $contactId is not present") };
+
 
         var imagePath: String? = null
         var imageReference: String? = null
@@ -109,11 +109,9 @@ class ContactService(
 
     fun delete(contactId: Int): String {
 
-        var contact: Contact? = contactRepo.findByIdOrNull(contactId)
-        if (contact == null) {
-            throw CustomException("Contact not found");
-        }
+        var contactOptional = contactRepo.findById(contactId)
 
+        val contact: Contact = contactOptional.orElseThrow { CustomException("Movie with id $contactId is not present") };
         val bucket = StorageClient.getInstance().bucket(bucketName)
 
         if (contact.imageReference != null) {
@@ -122,5 +120,22 @@ class ContactService(
 
         contactRepo.delete(contact)
         return "Contact Deleted Successfully"
+    }
+
+    fun getAll(): List<ContactDTO> {
+        val contacts = contactRepo.getAllContact()
+
+        if (contacts.isEmpty())
+            throw CustomException("List of movies is empty.")
+
+        return contacts.map {
+            contactMapper.fromModelToDto(it)
+        }
+    }
+
+    fun getOne(contactId: Int): ContactDTO {
+        val contactOptional = contactRepo.findById(contactId)
+        val contact = contactOptional.orElseThrow { CustomException("Contact with id $contactId is not present") }
+        return contactMapper.fromModelToDto(contact)
     }
 }
