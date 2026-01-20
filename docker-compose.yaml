@@ -1,0 +1,24 @@
+# building the containrs in the subdirectory
+
+version: '3.8'
+services:
+  ux-interview-backend:
+    container_name: ux-interview-backend
+    networks:
+      - my-network
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+  ux-interview-frontend:
+    container_name: ux-interview-frontend
+    networks:
+      - my-network
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - ux-interview-backend
+networks:
+  my-network:
+    driver: bridge
+
