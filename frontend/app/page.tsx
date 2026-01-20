@@ -1,11 +1,15 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import HeaderBar from "@/components/header";
+import ContactsList from "@/components/contact_list";
 
 export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
+        <HeaderBar/>
+        <ContactsList/>
+        {/* <Image
           className={styles.logo}
           src="/next.svg"
           alt="Next.js logo"
@@ -59,7 +63,7 @@ export default function Home() {
           >
             Documentation
           </a>
-        </div>
+        </div> */}
       </main>
     </div>
   );

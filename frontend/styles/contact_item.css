@@ -1,0 +1,56 @@
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+
+  padding: 12px 16px;
+  border-radius: 12px;
+
+  background: #141414;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+
+.contactItem:not(:last-child) {
+  border-bottom: 1px solid #1f1f1f;
+  margin-bottom: 8px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #2a2a2a;
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.phone {
+  color: #b0b0b0;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.itemActions {
+  color: #888;
+  background: #000FF000;
+  font-size: 20px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border-width: 0px;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
