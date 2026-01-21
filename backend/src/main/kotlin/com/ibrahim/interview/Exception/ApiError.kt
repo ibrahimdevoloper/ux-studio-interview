@@ -1,12 +1,13 @@
 package com.ibrahim.interview.Exception
 
+import lombok.Getter
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus
 
 data class ApiError(
-    private val type: String? = null,
-    private val title: String? = null,
-    private val status: Int = HttpStatus.BAD_REQUEST.value(),
-    private val detail: String? = null,
-    private val instance: String? = null,
+    val type: String? = null,
+    val title: String? = null,
+    val status: Int = HttpStatus.BAD_REQUEST.value(),
+    val detail: String? = null,
+    val instance: String? = null
     )
