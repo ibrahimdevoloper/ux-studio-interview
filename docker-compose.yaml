@@ -9,6 +9,9 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+
   ux-interview-frontend:
     container_name: ux-interview-frontend
     networks:
@@ -16,6 +19,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    ports:
+      - 3000:3000
     depends_on:
       - ux-interview-backend
 networks:
