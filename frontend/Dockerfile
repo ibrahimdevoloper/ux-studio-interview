@@ -1,37 +1,30 @@
-# Multi-stage build for React + Node.js
-FROM node:18-alpine AS builder
+# Dockerfile
+FROM node:22-alpine AS builder
 
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-COPY package-lock.json* ./
-
-# Install all dependencies including devDependencies
+COPY package.json package-lock.json* ./
 RUN npm ci
-
-# Copy source code
 COPY . .
-
-# Build the app
 RUN npm run build
 
-# Production stage
-FROM node:18-alpine
-
+FROM node:22-alpine AS runner
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Set to production environment
 ENV NODE_ENV=production
 
-# Install serve to run static files
-RUN npm install -g serve
+# For standalone output (if using output: 'standalone' in next.config.js)
+# COPY --from=builder /app/.next/standalone ./
+# COPY --from=builder /app/.next/static ./.next/static
 
-# Copy built files from builder stage
-COPY --from=builder /app/build ./build
+# For regular Next.js build
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 
-# Expose port (3000 is default for serve)
 EXPOSE 3000
 
-# Run the app
-CMD ["serve", "-s", "build", "-l", "3000"]
+CMD ["npm", "start"]
