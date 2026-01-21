@@ -8,3 +8,5 @@ CREATE TABLE IF NOT EXISTS contact(
     image_reference VARCHAR(5000) DEFAULT NULL,
     storage_provider VARCHAR(5000) DEFAULT NULL
 );
+
+INSERT INTO contact VALUES(1,'Ibrahim','Shaglil','+963959504146','ibrah@ss.com',null,null,null);
